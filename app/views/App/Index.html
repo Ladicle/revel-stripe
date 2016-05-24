@@ -1,23 +1,23 @@
 {{set . "title" "Home"}}
 {{template "header.html" .}}
 
-<header class="hero-unit" style="background-color:#A9F16C">
-  <div class="container">
-    <div class="row">
-      <div class="hero-text">
-        <h1>It works!</h1>
-        <p></p>
-      </div>
-    </div>
-  </div>
-</header>
-
-<div class="container">
-  <div class="row">
-    <div class="span6">
-      {{template "flash.html" .}}
-    </div>
-  </div>
-</div>
+{{ range $index, $value := .plans }}
+<form action="/charge" method="POST">
+  <input type="hidden" name="planID" value="{{ $value.ID }}">
+  <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="{{ $value.Key }}"
+    data-amount="{{ $value.Amount }}"
+    data-name="{{ $value.Name }}"
+    data-image="https://s3.amazonaws.com/stripe-uploads/acct_17vIKECWa4ao0gLRmerchant-icon-1463883061651-icon_stripe.png"
+    data-panel-label="合計"
+    data-label="{{ $value.Name }}を購入する"
+    data-locale="auto"
+    data-zip-code="false"
+    data-allow-remember-me=false
+    data-currency="{{ $value.Currency }}">
+  </script>
+</form>
+{{ end }}
 
 {{template "footer.html" .}}
